@@ -1,0 +1,37 @@
+PROGRAM:
+
+import java.util.Scanner;
+import java.util.function.Predicate;
+
+public class PalindromeLambda {
+    public static void main(String[] args) {
+
+        Scanner sc = new Scanner(System.in);
+
+        System.out.print("Enter number: ");
+        int num = sc.nextInt();
+
+        Predicate<Integer> isPalindrome = n -> {
+            int temp = n, rev = 0;
+
+            while (temp > 0) {
+                rev = rev * 10 + temp % 10;
+                temp /= 10;
+            }
+
+            return rev == n;
+        };
+
+        if (isPalindrome.test(num))
+            System.out.println("Palindrome");
+        else
+            System.out.println("Not Palindrome");
+
+        sc.close();
+    }
+}
+
+OUTPUT:
+
+Enter number: 121
+Palindrome
