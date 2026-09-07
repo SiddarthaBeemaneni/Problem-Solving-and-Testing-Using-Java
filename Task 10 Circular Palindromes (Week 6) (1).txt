@@ -1,0 +1,193 @@
+import java.io.*;
+import java.util.*;
+
+class Result {
+
+    public static List<Integer> circularPalindromes(String s) {
+
+        int n = s.length();
+
+        // Duplicate the string for circular rotations
+        String str = s + s;
+        int len = str.length();
+
+        int[] odd = new int[len];
+        int[] even = new int[len];
+
+        manacherOdd(str, odd);
+        manacherEven(str, even);
+
+        List<Integer> result = new ArrayList<>();
+
+        for (int start = 0; start < n; start++) {
+
+            int end = start + n - 1;
+            int best = 1;
+
+            // -----------------------------
+            // Odd length palindromes
+            // -----------------------------
+            for (int center = start; center <= end; center++) {
+
+                int radius = odd[center];
+
+                int left = center - start;
+                int right = end - center;
+
+                int allowed = Math.min(
+                        radius,
+                        Math.min(left, right) + 1
+                );
+
+                int length = 2 * allowed - 1;
+
+                if (length > best) {
+                    best = length;
+                }
+            }
+
+            // -----------------------------
+            // Even length palindromes
+            // -----------------------------
+            for (int center = start; center <= end; center++) {
+
+                int radius = even[center];
+
+                int left = center - start;
+
+                // FIXED: +1 is required here
+                int right = end - center + 1;
+
+                int allowed = Math.min(
+                        radius,
+                        Math.min(left, right)
+                );
+
+                int length = 2 * allowed;
+
+                if (length > best) {
+                    best = length;
+                }
+            }
+
+            result.add(best);
+        }
+
+        return result;
+    }
+
+    // =========================================
+    // Manacher Algorithm - Odd Palindromes
+    // =========================================
+    private static void manacherOdd(String s, int[] d) {
+
+        int n = s.length();
+
+        int l = 0;
+        int r = -1;
+
+        for (int i = 0; i < n; i++) {
+
+            int k;
+
+            if (i > r) {
+                k = 1;
+            } else {
+                k = Math.min(
+                        d[l + r - i],
+                        r - i + 1
+                );
+            }
+
+            while (i - k >= 0 &&
+                   i + k < n &&
+                   s.charAt(i - k) == s.charAt(i + k)) {
+
+                k++;
+            }
+
+            d[i] = k;
+
+            if (i + k - 1 > r) {
+                l = i - k + 1;
+                r = i + k - 1;
+            }
+        }
+    }
+
+    // =========================================
+    // Manacher Algorithm - Even Palindromes
+    // =========================================
+    private static void manacherEven(String s, int[] d) {
+
+        int n = s.length();
+
+        int l = 0;
+        int r = -1;
+
+        for (int i = 0; i < n; i++) {
+
+            int k;
+
+            if (i > r) {
+                k = 0;
+            } else {
+                k = Math.min(
+                        d[l + r - i + 1],
+                        r - i + 1
+                );
+            }
+
+            while (i - k - 1 >= 0 &&
+                   i + k < n &&
+                   s.charAt(i - k - 1) == s.charAt(i + k)) {
+
+                k++;
+            }
+
+            d[i] = k;
+
+            if (i + k - 1 > r) {
+                l = i - k;
+                r = i + k - 1;
+            }
+        }
+    }
+}
+
+public class Solution {
+
+    public static void main(String[] args) throws IOException {
+
+        BufferedReader bufferedReader =
+                new BufferedReader(
+                        new InputStreamReader(System.in)
+                );
+
+        BufferedWriter bufferedWriter =
+                new BufferedWriter(
+                        new FileWriter(System.getenv("OUTPUT_PATH"))
+                );
+
+        int n = Integer.parseInt(
+                bufferedReader.readLine().trim()
+        );
+
+        String s = bufferedReader.readLine().trim();
+
+        List<Integer> result =
+                Result.circularPalindromes(s);
+
+        for (int i = 0; i < result.size(); i++) {
+
+            bufferedWriter.write(
+                    String.valueOf(result.get(i))
+            );
+
+            bufferedWriter.newLine();
+        }
+
+        bufferedReader.close();
+        bufferedWriter.close();
+    }
+}
