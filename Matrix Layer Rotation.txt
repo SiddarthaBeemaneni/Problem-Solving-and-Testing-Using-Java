@@ -1,0 +1,138 @@
+import java.io.*;
+import java.util.*;
+import java.util.stream.*;
+import static java.util.stream.Collectors.toList;
+
+class Result {
+
+    /*
+     * Complete the 'matrixRotation' function below.
+     *
+     * The function accepts following parameters:
+     *  1. 2D_INTEGER_ARRAY matrix
+     *  2. INTEGER r
+     */
+
+    public static void matrixRotation(List<List<Integer>> matrix, int r) {
+
+        int rows = matrix.size();
+        int cols = matrix.get(0).size();
+
+        int layers = Math.min(rows, cols) / 2;
+
+        for (int layer = 0; layer < layers; layer++) {
+
+            int top = layer;
+            int bottom = rows - 1 - layer;
+            int left = layer;
+            int right = cols - 1 - layer;
+
+            // Store the current layer
+            List<Integer> list = new ArrayList<>();
+
+            // Top row
+            for (int j = left; j <= right; j++) {
+                list.add(matrix.get(top).get(j));
+            }
+
+            // Right column
+            for (int i = top + 1; i <= bottom; i++) {
+                list.add(matrix.get(i).get(right));
+            }
+
+            // Bottom row
+            for (int j = right - 1; j >= left; j--) {
+                list.add(matrix.get(bottom).get(j));
+            }
+
+            // Left column
+            for (int i = bottom - 1; i > top; i--) {
+                list.add(matrix.get(i).get(left));
+            }
+
+            // Rotate the layer
+            int size = list.size();
+            int rotation = r % size;
+
+            int index = rotation;
+
+            // Put rotated values in top row
+            for (int j = left; j <= right; j++) {
+                matrix.get(top).set(j, list.get(index));
+                index = (index + 1) % size;
+            }
+
+            // Put rotated values in right column
+            for (int i = top + 1; i <= bottom; i++) {
+                matrix.get(i).set(right, list.get(index));
+                index = (index + 1) % size;
+            }
+
+            // Put rotated values in bottom row
+            for (int j = right - 1; j >= left; j--) {
+                matrix.get(bottom).set(j, list.get(index));
+                index = (index + 1) % size;
+            }
+
+            // Put rotated values in left column
+            for (int i = bottom - 1; i > top; i--) {
+                matrix.get(i).set(left, list.get(index));
+                index = (index + 1) % size;
+            }
+        }
+
+        // Print the final matrix
+        for (int i = 0; i < rows; i++) {
+
+            for (int j = 0; j < cols; j++) {
+                System.out.print(matrix.get(i).get(j) + " ");
+            }
+
+            System.out.println();
+        }
+    }
+}
+
+public class Solution {
+
+    public static void main(String[] args) throws IOException {
+
+        BufferedReader bufferedReader =
+                new BufferedReader(new InputStreamReader(System.in));
+
+        String[] firstMultipleInput =
+                bufferedReader.readLine()
+                        .replaceAll("\\s+$", "")
+                        .split(" ");
+
+        int m = Integer.parseInt(firstMultipleInput[0]);
+        int n = Integer.parseInt(firstMultipleInput[1]);
+        int r = Integer.parseInt(firstMultipleInput[2]);
+
+        List<List<Integer>> matrix = new ArrayList<>();
+
+        IntStream.range(0, m).forEach(i -> {
+
+            try {
+
+                matrix.add(
+                    Stream.of(
+                        bufferedReader.readLine()
+                            .replaceAll("\\s+$", "")
+                            .split(" ")
+                    )
+                    .map(Integer::parseInt)
+                    .collect(toList())
+                );
+
+            } catch (IOException ex) {
+
+                throw new RuntimeException(ex);
+            }
+        });
+
+        Result.matrixRotation(matrix, r);
+
+        bufferedReader.close();
+    }
+}
