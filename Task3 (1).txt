@@ -1,0 +1,79 @@
+import java.util.Scanner;
+import java.util.Stack;
+
+public class BrowserHistory {
+
+    public static void main(String[] args) {
+
+        Scanner sc = new Scanner(System.in);
+
+        Stack<String> history = new Stack<>();
+
+        while (true) {
+
+            System.out.println("\n===== BROWSER HISTORY =====");
+            System.out.println("1. Visit Page");
+            System.out.println("2. Back");
+            System.out.println("3. Display History");
+            System.out.println("4. Exit");
+
+            System.out.print("Enter your choice: ");
+            int choice = sc.nextInt();
+            sc.nextLine();
+
+            switch (choice) {
+
+                case 1:
+                    System.out.print("Enter website URL: ");
+                    String page = sc.nextLine();
+
+                    history.push(page);
+
+                    System.out.println("Visited: " + page);
+                    break;
+
+                case 2:
+                    if (!history.isEmpty()) {
+
+                        String previousPage = history.pop();
+
+                        System.out.println(
+                                "Back from: " + previousPage);
+
+                        if (!history.isEmpty()) {
+                            System.out.println(
+                                    "Current Page: " + history.peek());
+                        } else {
+                            System.out.println(
+                                    "No previous page available.");
+                        }
+
+                    } else {
+                        System.out.println(
+                                "Browser history is empty.");
+                    }
+                    break;
+
+                case 3:
+                    if (!history.isEmpty()) {
+                        System.out.println("\nHistory:");
+
+                        for (int i = history.size() - 1; i >= 0; i--) {
+                            System.out.println(history.get(i));
+                        }
+                    } else {
+                        System.out.println("History is empty.");
+                    }
+                    break;
+
+                case 4:
+                    System.out.println("Exiting browser...");
+                    sc.close();
+                    return;
+
+                default:
+                    System.out.println("Invalid choice.");
+            }
+        }
+    }
+}

@@ -1,0 +1,136 @@
+import java.util.Scanner;
+
+class Song {
+    String name;
+    Song next;
+
+    Song(String name) {
+        this.name = name;
+        this.next = null;
+    }
+}
+
+public class MusicPlaylist {
+
+    Song head = null;
+
+    // 1. Add a song
+    void addSong(String name) {
+
+        Song newSong = new Song(name);
+
+        if (head == null) {
+            head = newSong;
+        } else {
+            Song current = head;
+
+            while (current.next != null) {
+                current = current.next;
+            }
+
+            current.next = newSong;
+        }
+
+        System.out.println("Song added: " + name);
+    }
+
+    // 2. Remove a song
+    void removeSong(String name) {
+
+        if (head == null) {
+            System.out.println("Playlist is empty.");
+            return;
+        }
+
+        // If the first song needs to be removed
+        if (head.name.equalsIgnoreCase(name)) {
+            head = head.next;
+            System.out.println("Song removed: " + name);
+            return;
+        }
+
+        Song current = head;
+
+        while (current.next != null &&
+               !current.next.name.equalsIgnoreCase(name)) {
+            current = current.next;
+        }
+
+        if (current.next == null) {
+            System.out.println("Song not found.");
+        } else {
+            current.next = current.next.next;
+            System.out.println("Song removed: " + name);
+        }
+    }
+
+    // 3. Display playlist
+    void displayPlaylist() {
+
+        if (head == null) {
+            System.out.println("Playlist is empty.");
+            return;
+        }
+
+        System.out.println("\n===== MUSIC PLAYLIST =====");
+
+        Song current = head;
+        int position = 1;
+
+        while (current != null) {
+            System.out.println(position + ". " + current.name);
+
+            current = current.next;
+            position++;
+        }
+    }
+
+    public static void main(String[] args) {
+
+        Scanner sc = new Scanner(System.in);
+
+        MusicPlaylist playlist = new MusicPlaylist();
+
+        while (true) {
+
+            System.out.println("\n===== MENU =====");
+            System.out.println("1. Add Song");
+            System.out.println("2. Remove Song");
+            System.out.println("3. Display Playlist");
+            System.out.println("4. Exit");
+
+            System.out.print("Enter your choice: ");
+            int choice = sc.nextInt();
+            sc.nextLine();
+
+            switch (choice) {
+
+                case 1:
+                    System.out.print("Enter song name: ");
+                    String song = sc.nextLine();
+
+                    playlist.addSong(song);
+                    break;
+
+                case 2:
+                    System.out.print("Enter song name to remove: ");
+                    String remove = sc.nextLine();
+
+                    playlist.removeSong(remove);
+                    break;
+
+                case 3:
+                    playlist.displayPlaylist();
+                    break;
+
+                case 4:
+                    System.out.println("Exiting playlist...");
+                    sc.close();
+                    return;
+
+                default:
+                    System.out.println("Invalid choice.");
+            }
+        }
+    }
+}

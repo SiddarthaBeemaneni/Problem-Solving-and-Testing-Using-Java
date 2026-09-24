@@ -1,0 +1,120 @@
+import java.util.*;
+
+class Product {
+    int id;
+    String name;
+    double price;
+
+    Product(int id, String name, double price) {
+        this.id = id;
+        this.name = name;
+        this.price = price;
+    }
+
+    @Override
+    public String toString() {
+        return "ID: " + id + ", Name: " + name + ", Price: ₹" + price;
+    }
+}
+
+class Order {
+    int orderId;
+    String customerName;
+    int priority;
+
+    Order(int orderId, String customerName, int priority) {
+        this.orderId = orderId;
+        this.customerName = customerName;
+        this.priority = priority;
+    }
+
+    @Override
+    public String toString() {
+        return "Order ID: " + orderId +
+               ", Customer: " + customerName +
+               ", Priority: " + priority;
+    }
+}
+
+public class OnlineShoppingSystem {
+
+    public static void main(String[] args) {
+
+        // ------------------------------------------------
+        // 1. Linear Collection - ArrayList
+        // ------------------------------------------------
+        ArrayList<Product> products = new ArrayList<>();
+
+        products.add(new Product(101, "Laptop", 55000));
+        products.add(new Product(102, "Smartphone", 25000));
+        products.add(new Product(103, "Headphones", 3000));
+        products.add(new Product(104, "Keyboard", 1500));
+
+        System.out.println("===== PRODUCT LIST =====");
+
+        for (Product p : products) {
+            System.out.println(p);
+        }
+
+
+        // ------------------------------------------------
+        // 2. Non-Linear Collection - HashMap
+        // Fast searching using Product ID
+        // ------------------------------------------------
+        HashMap<Integer, Product> productMap = new HashMap<>();
+
+        for (Product p : products) {
+            productMap.put(p.id, p);
+        }
+
+        int searchId = 103;
+
+        System.out.println("\n===== PRODUCT SEARCH =====");
+
+        if (productMap.containsKey(searchId)) {
+            System.out.println("Product Found:");
+            System.out.println(productMap.get(searchId));
+        } else {
+            System.out.println("Product Not Found");
+        }
+
+
+        // ------------------------------------------------
+        // 3. Non-Linear Collection - PriorityQueue
+        // Process orders according to priority
+        // Smaller priority number = Higher priority
+        // ------------------------------------------------
+        PriorityQueue<Order> orders =
+                new PriorityQueue<>(
+                        Comparator.comparingInt(o -> o.priority)
+                );
+
+        orders.add(new Order(1, "Rahul", 3));
+        orders.add(new Order(2, "Arun", 1));
+        orders.add(new Order(3, "Priya", 2));
+        orders.add(new Order(4, "Kiran", 1));
+
+        System.out.println("\n===== ORDER PROCESSING =====");
+
+        while (!orders.isEmpty()) {
+            Order order = orders.poll();
+            System.out.println("Processing: " + order);
+        }
+
+
+        // ------------------------------------------------
+        // 4. TreeSet - Products sorted by Product ID
+        // ------------------------------------------------
+        TreeSet<Integer> sortedProductIds = new TreeSet<>();
+
+        for (Product p : products) {
+            sortedProductIds.add(p.id);
+        }
+
+        System.out.println("\n===== SORTED PRODUCT IDs =====");
+
+        for (int id : sortedProductIds) {
+            System.out.println(id);
+        }
+    }
+}

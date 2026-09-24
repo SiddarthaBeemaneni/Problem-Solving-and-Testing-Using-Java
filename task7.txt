@@ -1,0 +1,37 @@
+import java.util.Scanner;
+import java.util.TreeSet;
+
+public class SortedStudentMarks {
+
+    public static void main(String[] args) {
+
+        Scanner sc = new Scanner(System.in);
+
+        // TreeSet stores unique marks
+        // and automatically sorts them
+        TreeSet<Integer> marks = new TreeSet<>();
+
+        System.out.print("Enter number of students: ");
+        int n = sc.nextInt();
+
+        // Store marks
+        for (int i = 0; i < n; i++) {
+
+            System.out.print("Enter marks of Student "
+                    + (i + 1) + ": ");
+
+            int mark = sc.nextInt();
+
+            marks.add(mark);
+        }
+
+        // Display unique marks in ascending order
+        System.out.println("\n===== UNIQUE MARKS IN ASCENDING ORDER =====");
+
+        for (int mark : marks) {
+            System.out.println(mark);
+        }
+
+        sc.close();
+    }
+}

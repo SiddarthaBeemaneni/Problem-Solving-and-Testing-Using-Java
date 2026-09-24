@@ -1,0 +1,49 @@
+import java.util.HashMap;
+import java.util.Scanner;
+
+public class StudentMarksHashMap {
+
+    public static void main(String[] args) {
+
+        Scanner sc = new Scanner(System.in);
+
+        // Create HashMap
+        // Key = Roll Number
+        // Value = Marks
+        HashMap<Integer, Integer> studentMarks = new HashMap<>();
+
+        System.out.print("Enter number of students: ");
+        int n = sc.nextInt();
+
+        // Store student marks
+        for (int i = 0; i < n; i++) {
+
+            System.out.print("Enter roll number: ");
+            int rollNo = sc.nextInt();
+
+            System.out.print("Enter marks: ");
+            int marks = sc.nextInt();
+
+            studentMarks.put(rollNo, marks);
+        }
+
+        // Search for a student
+        System.out.print("\nEnter roll number to search: ");
+        int searchRollNo = sc.nextInt();
+
+        if (studentMarks.containsKey(searchRollNo)) {
+
+            int marks = studentMarks.get(searchRollNo);
+
+            System.out.println(
+                    "Marks of Roll No " + searchRollNo
+                    + ": " + marks
+            );
+
+        } else {
+            System.out.println("Student not found.");
+        }
+
+        sc.close();
+    }
+}

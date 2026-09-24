@@ -1,0 +1,77 @@
+import java.util.Scanner;
+
+public class StudentMarksManagement {
+
+    public static void main(String[] args) {
+
+        Scanner sc = new Scanner(System.in);
+
+        // Initial array size
+        int[] marks = new int[2];
+
+        int count = 0;
+
+        System.out.println("Enter student marks.");
+        System.out.println("Enter -1 to stop.");
+
+        while (true) {
+
+            System.out.print("Enter marks: ");
+            int mark = sc.nextInt();
+
+            // Stop condition
+            if (mark == -1) {
+                break;
+            }
+
+            // Check if array is full
+            if (count == marks.length) {
+
+                // Create a new array with double size
+                int[] newMarks = new int[marks.length * 2];
+
+                // Copy old marks
+                for (int i = 0; i < marks.length; i++) {
+                    newMarks[i] = marks[i];
+                }
+
+                // Replace old array
+                marks = newMarks;
+
+                System.out.println("Array size increased to "
+                        + marks.length);
+            }
+
+            // Add new mark
+            marks[count] = mark;
+            count++;
+        }
+
+        // Display all marks
+        System.out.println("\n===== STUDENT MARKS =====");
+
+        for (int i = 0; i < count; i++) {
+            System.out.println("Student " + (i + 1)
+                    + " : " + marks[i]);
+        }
+
+        // Calculate average
+        if (count > 0) {
+
+            int total = 0;
+
+            for (int i = 0; i < count; i++) {
+                total += marks[i];
+            }
+
+            double average = (double) total / count;
+
+            System.out.println("\nTotal Students: " + count);
+            System.out.println("Average Marks: " + average);
+        } else {
+            System.out.println("No marks entered.");
+        }
+
+        sc.close();
+    }
+}
