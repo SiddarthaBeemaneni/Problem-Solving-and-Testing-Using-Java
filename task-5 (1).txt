@@ -1,0 +1,24 @@
+import java.util.*;
+
+public class Main {
+    public static void main(String[] args) {
+        Scanner s=new Scanner(System.in);
+        int n=s.nextInt();
+        ArrayList<ArrayList<Integer>> a=new ArrayList<>();
+
+        for(int i=0;i<n;i++){
+            int m=s.nextInt();
+            ArrayList<Integer> x=new ArrayList<>();
+            while(m-->0) x.add(s.nextInt());
+            a.add(x);
+        }
+
+        int q=s.nextInt();
+        while(q-->0){
+            int x=s.nextInt()-1,y=s.nextInt()-1;
+            if(x>=0&&x<a.size()&&y>=0&&y<a.get(x).size())
+                System.out.println(a.get(x).get(y));
+            else System.out.println("ERROR!");
+        }
+    }
+}
